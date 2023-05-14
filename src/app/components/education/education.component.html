@@ -1,0 +1,23 @@
+<div class="flex rounded-lg gap-11" [ngClass]="{'pointer-events-none opacity-30': isBeingDeleted}">
+
+    <div class="w-full flex">
+        <div class="w-40 grid place-content-center">
+            <img class="aspect-square object-cover w-11" *ngIf="education.school.logo" [src]="education.school.logo.url"
+                alt="dsa">
+        </div>
+        <div class="w-full">
+            <p class="text-lg font-medium mb-0">{{education.school.name}}</p>
+            <p class="text-gray-500">{{education.title}}</p>
+            <p class="text-gray-500">{{education.startDate |date:'dd/MM/yyyy'}} - {{education.finishDate |
+                date:'dd/MM/yyyy'}}
+            </p>
+        </div>
+    </div>
+    <div *ngIf="isEditable" class="flex flex-col justify-evenly items-center">
+        <app-edit-button (click)="openForm()"></app-edit-button>
+        <app-delete-button (click)="delete()"></app-delete-button>
+    </div>
+</div>
+
+<app-modal-form *ngIf="showForm" [onModalClick]="closeForm" [questions]="questions" [onSubmit]="edit"
+    [baseObject]="educationForm"></app-modal-form>

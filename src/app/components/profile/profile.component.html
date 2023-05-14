@@ -1,0 +1,50 @@
+<div *ngIf="profile ;else loader" class="profile-container">
+    <div class="h-fit relative" [ngClass]="{'pointer-events-none blur-sm': bannerImageIsLoading}">
+
+        <img [src]="profile.banner ? profile.banner.url : '/assets/no-image.png'" alt="image"
+            class="object-cover h-80 w-full">
+
+        <input id="banner-input" type="file" accept="image/jpeg, image/png" (change)="uploadBannerImage($event)"
+            style="display: none;">
+        <label *ngIf="isEditable" class="absolute top-1 right-1" for="banner-input">
+            <app-edit-button></app-edit-button>
+        </label>
+
+    </div>
+
+    <div class="flex gap-5">
+        <div class="-mt-16 px-6">
+            <div class="profile-picture-container relative"
+                [ngClass]="{'pointer-events-none blur-sm': profilePictureIsLoading}">
+                <img [src]="profile.picture?.url" class="aspect-square rounded-full w-40 object-cover" alt="image">
+                <input id="profile-picture-input" type="file" accept="image/jpeg, image/png"
+                    (change)="uploadProfilePicture($event)" style="display: none;">
+                <label *ngIf="isEditable" class="absolute top-0 right-0 left-0 bottom-0 m-auto w-fit h-fit"
+                    for="profile-picture-input"><app-edit-button></app-edit-button></label>
+            </div>
+            <div class="text-sm flex flex-col items-center relative pt-5  ">
+                <app-edit-button class="ml-auto" *ngIf="isEditable" (click)="openBasicProfileForm()"></app-edit-button>
+                <span class="font-medium">{{profile.name | titlecase}} {{profile.lastName | titlecase}}</span>
+                <span class="font-medium whitespace-nowrap">{{profile.title |titlecase}}</span>
+            </div>
+
+        </div>
+        <div class="w-full pt-5">
+            <app-edit-button *ngIf="isEditable" class="ml-auto w-fit block"
+                (click)="openDescriptionForm()"></app-edit-button>
+            <p class="text-sm">{{profile.description}}</p>
+        </div>
+    </div>
+</div>
+
+
+<app-modal-form *ngIf="showDescriptionForm" [onModalClick]="closeDescriptionForm"
+    [questions]="profileDescriptionQuestions" [onSubmit]="editProfile"
+    [baseObject]="profileDescriptionForm"></app-modal-form>
+<app-modal-form *ngIf="showBasicProfileForm" [onModalClick]="closeBasicProfileForm" [questions]="basicProfileQuestions"
+    [onSubmit]="editProfile" [baseObject]="profileBasicForm"></app-modal-form>
+
+
+<ng-template #loader>
+    <p>cargando...</p>
+</ng-template>

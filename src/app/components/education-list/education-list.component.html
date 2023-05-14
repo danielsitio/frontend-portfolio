@@ -1,0 +1,21 @@
+<div class="mt-16 flex justify-between items-center mb-10">
+    <span class="text-3xl">Educación</span>
+    <app-add-button (click)="openEducationForm()" *ngIf="isEditable"></app-add-button>
+</div>
+<ng-container *ngIf="educationsAreLoading;then loading else notLoading ">
+</ng-container>
+
+<ng-template #loading>
+    <div>Cargando educaciones</div>
+</ng-template>
+
+<ng-template #notLoading>
+    <app-education *ngFor="let education of educations" [education]="education" (deleted)="deleteEducation(education)"
+        (updated)="updateEducation($event)" [isEditable]="isEditable">
+    </app-education>
+    <div *ngIf="educations!.length==0" class="text-base text-gray-400">No hay nada que mostrar</div>
+</ng-template>
+
+
+<app-modal-form *ngIf="showEducationForm" [title]="'Añadir educación'" [questions]="newEducationQuestions"
+    [onSubmit]="addEducation" [onModalClick]="closeEducationForm"></app-modal-form>
